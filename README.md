@@ -18,13 +18,9 @@ A modern **full-stack task management web application** built using the **MERN S
 
 ## 🌐 Live Demo
 
-### Frontend
+🚀 **Frontend (Live App):**  [Task Management App](https://task-management-app-teal-phi.vercel.app/)
 
-🔗 **Live App:** `Add Frontend Live Link Here`
-
-### Backend API
-
-🔗 **API Base URL:** `Add Backend Live Link Here`
+⚙️ **Backend API (Server):**  [Backend API](https://task-management-app-79lx.onrender.com/)
 
 ---
 
