@@ -26,7 +26,8 @@ export default function Login() {
       saveAuth(response.data.user, response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Login failed. Please try again.');
+      const message = err?.response?.data?.message || 'Login failed. Please try again.';
+      window.confirm(message);
     } finally {
       setLoading(false);
     }
