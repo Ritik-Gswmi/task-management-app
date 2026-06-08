@@ -9,11 +9,13 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [slowRequestMessage, setSlowRequestMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setSlowRequestMessage('');
 
     if (!name.trim() || !email.trim() || password.length < 6) {
       setError('Name, valid email, and password must be provided.');
@@ -21,6 +23,10 @@ export default function Register() {
     }
 
     setLoading(true);
+    const slowRequestTimer = window.setTimeout(() => {
+      setSlowRequestMessage('Waking up backend… this may take a few seconds on first request.');
+    }, 3000);
+
     try {
       await api.post('/auth/register', {
         name: name.trim(),
@@ -37,6 +43,8 @@ export default function Register() {
       const message = err?.response?.data?.message || 'Registration failed. Please try again.';
       window.confirm(message);
     } finally {
+      window.clearTimeout(slowRequestTimer);
+      setSlowRequestMessage('');
       setLoading(false);
     }
   };
@@ -48,6 +56,16 @@ export default function Register() {
         <p className="mt-3 text-slate-600">Register to manage tasks with a secure dashboard.</p>
 
         <form className="mt-8 grid gap-4" onSubmit={handleSubmit}>
+          {error && (
+            <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+              {error}
+            </div>
+          )}
+          {slowRequestMessage && (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+              {slowRequestMessage}
+            </div>
+          )}
           <label className="grid gap-2">
             <span className="text-sm font-semibold text-slate-700">Full name</span>
             <input

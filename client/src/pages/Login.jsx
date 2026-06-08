@@ -9,11 +9,13 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [slowRequestMessage, setSlowRequestMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setSlowRequestMessage('');
 
     if (!email.trim() || !password.trim()) {
       setError('Please enter both email and password.');
@@ -21,6 +23,10 @@ export default function Login() {
     }
 
     setLoading(true);
+    const slowRequestTimer = window.setTimeout(() => {
+      setSlowRequestMessage('Waking up backend… this may take a few seconds on first request.');
+    }, 3000);
+
     try {
       const response = await api.post('/auth/login', { email: email.trim(), password });
       saveAuth(response.data.user, response.data.token);
@@ -29,6 +35,8 @@ export default function Login() {
       const message = err?.response?.data?.message || 'Login failed. Please try again.';
       window.confirm(message);
     } finally {
+      window.clearTimeout(slowRequestTimer);
+      setSlowRequestMessage('');
       setLoading(false);
     }
   };
@@ -43,6 +51,11 @@ export default function Login() {
           {error && (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
               {error}
+            </div>
+          )}
+          {slowRequestMessage && (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+              {slowRequestMessage}
             </div>
           )}
           <label className="grid gap-2">
