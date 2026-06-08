@@ -127,6 +127,7 @@ task-management-app/
 │   └── vite.config.js
 │
 │── server/
+│   ├── controllers/
 │   ├── database/
 │   ├── middleware/
 │   ├── models/
